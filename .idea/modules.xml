@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/DatabaseSystem2020.iml" filepath="$PROJECT_DIR$/.idea/DatabaseSystem2020.iml" />
       <module fileurl="file://$PROJECT_DIR$/acmdb-lab0/acmdb-lab0.iml" filepath="$PROJECT_DIR$/acmdb-lab0/acmdb-lab0.iml" />
       <module fileurl="file://$PROJECT_DIR$/acmdb-lab0/src/acmdb-lab01.iml" filepath="$PROJECT_DIR$/acmdb-lab0/src/acmdb-lab01.iml" />
     </modules>
