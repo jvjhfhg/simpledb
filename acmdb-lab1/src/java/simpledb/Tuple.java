@@ -1,6 +1,7 @@
 package simpledb;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -16,7 +17,7 @@ public class Tuple implements Serializable {
 
     private TupleDesc tupleDesc;
     private RecordId recordId;
-    private LinkedList<Field> fields = new LinkedList<>();
+    private ArrayList<Field> fields;
 
     /**
      * Create a new tuple with the specified schema (type).
@@ -26,8 +27,9 @@ public class Tuple implements Serializable {
      *            instance with at least one field.
      */
     public Tuple(TupleDesc td) {
-        this.tupleDesc = td;
         int numFields = td.numFields();
+        this.fields = new ArrayList<>(numFields);
+        this.tupleDesc = td;
         for (int i = 0; i < numFields; ++i) {
             fields.add(null);
         }

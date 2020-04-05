@@ -35,9 +35,18 @@ public class TupleDesc implements Serializable {
         public String toString() {
             return fieldName + "(" + fieldType + ")";
         }
+
+        public boolean equals(Object o) {
+            if (o instanceof TDItem) {
+                return ((((TDItem) o).fieldName == null && fieldName == null)
+                        || (((TDItem) o).fieldName != null && ((TDItem) o).fieldName.equals(fieldName)))
+                        && ((TDItem) o).fieldType == fieldType;
+            }
+            return false;
+        }
     }
 
-    private LinkedList<TDItem> tdItems = new LinkedList<>();
+    private ArrayList<TDItem> tdItems;
 
     /**
      * @return
@@ -53,7 +62,9 @@ public class TupleDesc implements Serializable {
     /**
      * An empty constructor used only inside class TupleDesc.
      */
-    private TupleDesc() {}
+    private TupleDesc() {
+        this.tdItems = new ArrayList<>();
+    }
 
     /**
      * Create a new TupleDesc with typeAr.length fields with fields of the
@@ -67,6 +78,7 @@ public class TupleDesc implements Serializable {
      *            be null.
      */
     public TupleDesc(Type[] typeAr, String[] fieldAr) {
+        this.tdItems = new ArrayList<>(typeAr.length);
         for (int i = 0; i < typeAr.length; ++i) {
             this.tdItems.add(new TDItem(typeAr[i], fieldAr[i]));
         }
@@ -81,6 +93,7 @@ public class TupleDesc implements Serializable {
      *            TupleDesc. It must contain at least one entry.
      */
     public TupleDesc(Type[] typeAr) {
+        this.tdItems = new ArrayList<>(typeAr.length);
         for (int i = 0; i < typeAr.length; ++i) {
             this.tdItems.add(new TDItem(typeAr[i], null));
         }
@@ -137,7 +150,10 @@ public class TupleDesc implements Serializable {
      */
     public int fieldNameToIndex(String name) throws NoSuchElementException {
         for (int i = 0; i < tdItems.size(); ++i) {
-            if (tdItems.get(i).fieldName.equals(name)) {
+            if (name == null && tdItems.get(i).fieldName == null) {
+                return i;
+            }
+            if (name != null && name.equals(tdItems.get(i).fieldName)) {
                 return i;
             }
         }
@@ -170,7 +186,7 @@ public class TupleDesc implements Serializable {
         TupleDesc newTupleDesc = new TupleDesc();
         newTupleDesc.tdItems.addAll(td1.tdItems);
         newTupleDesc.tdItems.addAll(td2.tdItems);
-        return new TupleDesc();
+        return newTupleDesc;
     }
 
     /**
