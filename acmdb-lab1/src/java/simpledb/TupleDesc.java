@@ -32,10 +32,12 @@ public class TupleDesc implements Serializable {
             this.fieldType = t;
         }
 
+        @Override
         public String toString() {
             return fieldName + "(" + fieldType + ")";
         }
 
+        @Override
         public boolean equals(Object o) {
             if (o instanceof TDItem) {
                 return ((((TDItem) o).fieldName == null && fieldName == null)
