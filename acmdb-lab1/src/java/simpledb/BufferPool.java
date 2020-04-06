@@ -2,10 +2,7 @@ package simpledb;
 
 import java.io.*;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -30,7 +27,7 @@ public class BufferPool {
     constructor instead. */
     public static final int DEFAULT_PAGES = 50;
 
-    private TreeMap<PageId, Page> pageBuffer;
+    private HashMap<PageId, Page> pageBuffer;
     private int capacity;
 
     /**
@@ -39,7 +36,7 @@ public class BufferPool {
      * @param numPages maximum number of pages in this buffer pool.
      */
     public BufferPool(int numPages) {
-        pageBuffer = new TreeMap<>();
+        pageBuffer = new HashMap<>();
         capacity = numPages;
     }
     
