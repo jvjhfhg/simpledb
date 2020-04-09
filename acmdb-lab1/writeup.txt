@@ -1,0 +1,7 @@
+Writeup for Lab1 - Zhiqi Zhang, 517030910426
+
+I think the space problem would become the bottleneck, so I try to use the least space without reducing perfomance much. 
+
+I added "throws NoSuchElementException" to Catalog.getPrimaryKey() and Catalog.getTableName(). 
+
+I have spent several days on the lab due to I didn't understand the relation among the classes at first and I'm not familiar with some libraries in Java. And for some cases unspecified to throw an exception or return null, I'm still feeling confused. I'm not sure whether these will cause problems in the future. 
