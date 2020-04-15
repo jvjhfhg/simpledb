@@ -31,8 +31,8 @@ public class Catalog {
         }
     }
 
-    private ArrayList<Table> tables;
-    private ArrayList<Integer> fileIds;
+    private List<Table> tables;
+    private List<Integer> fileIds;
 
     /**
      * Constructor.

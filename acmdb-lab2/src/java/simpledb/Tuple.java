@@ -2,9 +2,8 @@ package simpledb;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 /**
  * Tuple maintains information about the contents of a tuple. Tuples have a
@@ -17,7 +16,7 @@ public class Tuple implements Serializable {
 
     private TupleDesc tupleDesc;
     private RecordId recordId;
-    private ArrayList<Field> fields;
+    private List<Field> fields;
 
     /**
      * Create a new tuple with the specified schema (type).

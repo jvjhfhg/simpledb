@@ -27,7 +27,7 @@ public class BufferPool {
     constructor instead. */
     public static final int DEFAULT_PAGES = 50;
 
-    private HashMap<PageId, Page> pageBuffer;
+    private Map<PageId, Page> pageBuffer;
     private int capacity;
 
     /**
