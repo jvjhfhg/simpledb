@@ -23,7 +23,7 @@ public class BTreeFile implements DbFile {
 
 	private final File f;
 	private final TupleDesc td;
-	private final int tableid ;
+	private final int tableid;
 	private int keyField;
 
 	/**
@@ -195,8 +195,25 @@ public class BTreeFile implements DbFile {
 	private BTreeLeafPage findLeafPage(TransactionId tid, HashMap<PageId, Page> dirtypages, BTreePageId pid, Permissions perm,
 			Field f) 
 					throws DbException, TransactionAbortedException {
-		// some code goes here
-        return null;
+		if (pid.pgcateg() == BTreePageId.LEAF) {
+			return (BTreeLeafPage) getPage(tid, dirtypages, pid, perm);
+		}
+
+		BTreeInternalPage page = (BTreeInternalPage) getPage(tid, dirtypages, pid, Permissions.READ_ONLY);
+
+		BTreePageId nextId = null;
+		Iterator<BTreeEntry> iterator = page.iterator();
+		while (iterator.hasNext()) {
+			BTreeEntry entry = iterator.next();
+			if (f == null) {
+				return findLeafPage(tid, dirtypages, entry.getLeftChild(), perm, f);
+			}
+			if (f.compare(Op.LESS_THAN_OR_EQ, entry.getKey())) {
+				return findLeafPage(tid, dirtypages, entry.getLeftChild(), perm, f);
+			}
+			nextId = entry.getRightChild();
+		}
+		return findLeafPage(tid, dirtypages, nextId, perm, f);
 	}
 	
 	/**
