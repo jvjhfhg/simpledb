@@ -1,7 +1,9 @@
-Writeup for Lab1 - Zhiqi Zhang, 517030910426
+Writeup for Lab2 - Zhiqi Zhang, 517030910426
 
-I think the space problem would become the bottleneck, so I try to use the least space without reducing perfomance much. 
+I record the last operating time of each page in BufferPool and evict the earliest one. 
 
-I added "throws NoSuchElementException" to Catalog.getPrimaryKey() and Catalog.getTableName(). 
+I implement Tuple.equals() since I've heard some of my classmates failed the system test of BTreeFileInsertTest because of the not implemented Tuple.equals() during our communicating, while none of them have new-ed a Tuple. 
 
-I have spent several days on the lab due to I didn't understand the relation among the classes at first and I'm not familiar with some libraries in Java. And for some cases unspecified to throw an exception or return null, I'm still feeling confused. I'm not sure whether these will cause problems in the future. 
+I feel confused with the description of IndexPredicate.equals() since I think it's nothing related to equals() and do not know how to use it in my project. 
+
+And it costs me 2-3 days to complete this lab. 

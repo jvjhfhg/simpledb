@@ -130,4 +130,33 @@ public class Tuple implements Serializable {
             fields.add(null);
         }
     }
+
+    public boolean equals(Object o) {
+        if (!(o instanceof Tuple)) {
+            return false;
+        }
+        if (tupleDesc == null) {
+            if (((Tuple) o).tupleDesc != null) {
+                return false;
+            }
+        } else if (!tupleDesc.equals(((Tuple) o).tupleDesc)) {
+            return false;
+        }
+        if (recordId == null) {
+            if (((Tuple) o).recordId != null) {
+                return false;
+            }
+        } else if (!recordId.equals(((Tuple) o).recordId)) {
+            return false;
+        }
+        if (fields.size() != ((Tuple) o).fields.size()) {
+            return false;
+        }
+        for (int i = 0; i < fields.size(); ++i) {
+            if (!fields.get(i).equals(((Tuple) o).fields.get(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
