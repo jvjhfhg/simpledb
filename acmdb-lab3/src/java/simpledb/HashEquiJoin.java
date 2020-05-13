@@ -9,6 +9,11 @@ public class HashEquiJoin extends Operator {
 
     private static final long serialVersionUID = 1L;
 
+    private DbIterator child1, child2;
+    private JoinPredicate predicate;
+    private HashMap<Field, LinkedList<Tuple>> hashMap;
+    private Tuple cur1;
+
     /**
      * Constructor. Accepts to children to join and the predicate to join them
      * on
@@ -21,42 +26,72 @@ public class HashEquiJoin extends Operator {
      *            Iterator for the right(inner) relation to join
      */
     public HashEquiJoin(JoinPredicate p, DbIterator child1, DbIterator child2) {
-        // some code goes here
+        this.child1 = child1;
+        this.child2 = child2;
+        this.predicate = p;
+        hashMap = new HashMap<>();
     }
 
     public JoinPredicate getJoinPredicate() {
-        // some code goes here
-        return null;
+        return predicate;
     }
 
     public TupleDesc getTupleDesc() {
-        // some code goes here
-        return null;
+        return TupleDesc.merge(child1.getTupleDesc(), child2.getTupleDesc());
     }
     
     public String getJoinField1Name()
     {
-        // some code goes here
-	return null;
+        return child1.getTupleDesc().getFieldName(predicate.getField1());
     }
 
     public String getJoinField2Name()
     {
-        // some code goes here
-        return null;
+        return child2.getTupleDesc().getFieldName(predicate.getField2());
     }
     
     public void open() throws DbException, NoSuchElementException,
             TransactionAbortedException {
-        // some code goes here
+        super.open();
+        child1.open();
+        child2.open();
+
+        listIt = null;
+        cur1 = null;
+
+        while (child2.hasNext()) {
+            Tuple cur2 = child2.next();
+            Field key = cur2.getField(predicate.getField2());
+
+            if (key == null) {
+                continue;
+            }
+
+            if (!hashMap.containsKey(key)) {
+                hashMap.put(key, new LinkedList<>());
+            }
+
+            hashMap.get(key).add(cur2);
+        }
     }
 
     public void close() {
-        // some code goes here
+        super.close();
+        child1.close();
+        child2.close();
+
+        listIt = null;
+        cur1 = null;
+
+        hashMap.clear();
     }
 
     public void rewind() throws DbException, TransactionAbortedException {
-        // some code goes here
+        child1.rewind();
+        child2.rewind();
+
+        listIt = null;
+        cur1 = null;
     }
 
     transient Iterator<Tuple> listIt = null;
@@ -80,19 +115,37 @@ public class HashEquiJoin extends Operator {
      * @see JoinPredicate#filter
      */
     protected Tuple fetchNext() throws TransactionAbortedException, DbException {
-        // some code goes here
-        return null;
+        while (true) {
+            if (cur1 == null) {
+                if (!child1.hasNext()) {
+                    return null;
+                }
+                cur1 = child1.next();
+                Field key = cur1.getField(predicate.getField1());
+                if (key == null) {
+                    cur1 = null;
+                    continue;
+                }
+                listIt = hashMap.get(key).iterator();
+            }
+
+            if (listIt != null && listIt.hasNext()) {
+                return Tuple.merge(cur1, listIt.next());
+            }
+
+            cur1 = null;
+        }
     }
 
     @Override
     public DbIterator[] getChildren() {
-        // some code goes here
-        return null;
+        return new DbIterator[] {child1, child2};
     }
 
     @Override
     public void setChildren(DbIterator[] children) {
-        // some code goes here
+        child1 = children[0];
+        child2 = children[1];
     }
     
 }
