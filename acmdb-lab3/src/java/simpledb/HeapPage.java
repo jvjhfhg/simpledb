@@ -19,6 +19,8 @@ public class HeapPage implements Page {
     final Tuple[] tuples;
     final int numSlots;
 
+    private TransactionId dirtyTid = null;
+
     byte[] oldData;
     private final Byte oldDataLock = new Byte((byte) 0);
 
@@ -46,8 +48,9 @@ public class HeapPage implements Page {
 
         // allocate and read the header slots of this page
         header = new byte[getHeaderSize()];
-        for (int i = 0; i < header.length; i++)
+        for (int i = 0; i < header.length; i++) {
             header[i] = dis.readByte();
+        }
         
         tuples = new Tuple[numSlots];
         try {
@@ -254,8 +257,18 @@ public class HeapPage implements Page {
      * @param t The tuple to add.
      */
     public void insertTuple(Tuple t) throws DbException {
-        // some code goes here
-        // not necessary for lab1
+        if (getNumEmptySlots() == 0) {
+            throw new DbException("Page is full");
+        }
+        for (int i = 0; i < numSlots; ++i) {
+            if (!isSlotUsed(i)) {
+                markSlotUsed(i, true);
+                RecordId recordId = new RecordId(pid, i);
+                t.setRecordId(recordId);
+                tuples[i] = t;
+                return;
+            }
+        }
     }
 
     /**
@@ -263,17 +276,18 @@ public class HeapPage implements Page {
      * that did the dirtying
      */
     public void markDirty(boolean dirty, TransactionId tid) {
-        // some code goes here
-	    // not necessary for lab1
+        if (dirty) {
+            dirtyTid = tid;
+        } else {
+            dirtyTid = null;
+        }
     }
 
     /**
      * Returns the tid of the transaction that last dirtied this page, or null if the page is not dirty
      */
     public TransactionId isDirty() {
-        // some code goes here
-	    // Not necessary for lab1
-        return null;      
+        return dirtyTid;
     }
 
     /**

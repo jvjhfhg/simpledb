@@ -76,8 +76,11 @@ public class HeapFile implements DbFile {
 
     // see DbFile.java for javadocs
     public void writePage(Page page) throws IOException {
-        // some code goes here
-        // not necessary for lab1
+        RandomAccessFile out = new RandomAccessFile(file, "rw");
+        PageId pid = page.getId();
+        out.seek(pid.pageNumber() * BufferPool.getPageSize());
+        out.write(page.getPageData());
+        out.close();
     }
 
     /**
@@ -87,20 +90,44 @@ public class HeapFile implements DbFile {
         return (int) (file.length() / BufferPool.getPageSize());
     }
 
+    int cnt = 0;
+
     // see DbFile.java for javadocs
     public ArrayList<Page> insertTuple(TransactionId tid, Tuple t)
                 throws DbException, IOException, TransactionAbortedException {
-        // some code goes here
-        return null;
-        // not necessary for lab1
+
+        ++cnt;
+
+        ArrayList<Page> dirtyPages = new ArrayList<>();
+        int numpages = numPages();
+        for (int i = 0; i < numpages; ++i) {
+            HeapPageId pid = new HeapPageId(getId(), i);
+            HeapPage page = (HeapPage) Database.getBufferPool().getPage(tid, pid, Permissions.READ_WRITE);
+
+            if (page.getNumEmptySlots() > 0) {
+                page.insertTuple(t);
+                page.markDirty(true, tid);
+                dirtyPages.add(page);
+                return dirtyPages;
+            }
+        }
+
+        HeapPageId pid = new HeapPageId(getId(), numpages);
+        HeapPage page = new HeapPage(pid, HeapPage.createEmptyPageData());
+        page.insertTuple(t);
+        writePage(page);
+        return dirtyPages;
     }
 
     // see DbFile.java for javadocs
     public ArrayList<Page> deleteTuple(TransactionId tid, Tuple t)
                 throws DbException, TransactionAbortedException {
-        // some code goes here
-        return null;
-        // not necessary for lab1
+        ArrayList<Page> dirtyPages = new ArrayList<>();
+        HeapPage page = (HeapPage) Database.getBufferPool().getPage(tid, t.getRecordId().getPageId(), Permissions.READ_WRITE);
+        page.deleteTuple(t);;
+        page.markDirty(true, tid);
+        dirtyPages.add(page);
+        return dirtyPages;
     }
 
     // see DbFile.java for javadocs
