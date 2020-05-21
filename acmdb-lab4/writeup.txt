@@ -1,0 +1,7 @@
+Writeup for Lab3 - Zhiqi Zhang, 517030910426
+
+In HeapFile.insertTuple(), when all the current pages are full and a new page is needed, I wrote an empty page to the file and inserted the tuple into the newed Page instance at first. The new page would be returned to BufferPool.insertTuple() and be inserted into BufferPool since I thought I could't directly call the insertTuple() method in DbFile. But in test/HeapFileWirteTest.addTuple(), the test directly called HeapFile.insertTuple() causing the first tuple of new page was not inserted into the page. 
+
+I found Operator.getChildren() and Operator.setChildren() methods useless and easy to cause problems since the iterators passed in or out may not be at initial status. 
+
+I spent about 2 days on this lab. 
