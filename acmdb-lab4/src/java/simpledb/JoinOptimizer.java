@@ -107,11 +107,7 @@ public class JoinOptimizer {
             // You do not need to implement proper support for these for Lab 5.
             return card1 + cost1 + cost2;
         } else {
-            // Insert your code here.
-            // HINT: You may need to use the variable "j" if you implemented
-            // a join algorithm that's more complicated than a basic
-            // nested-loops join.
-            return -1.0;
+            return cost1 + card1 * cost2 + card1 * card2;
         }
     }
 
@@ -155,9 +151,18 @@ public class JoinOptimizer {
             String field2PureName, int card1, int card2, boolean t1pkey,
             boolean t2pkey, Map<String, TableStats> stats,
             Map<String, Integer> tableAliasToId) {
-        int card = 1;
-        // some code goes here
-        return card <= 0 ? 1 : card;
+        if (joinOp == Predicate.Op.EQUALS) {
+            int card = Math.max(card1, card2);
+            if (t1pkey) {
+                card = Math.min(card, card1);
+            }
+            if (t2pkey) {
+                card = Math.max(card, card2);
+            }
+            return card;
+        } else {
+            return card1 * card2 / 2;
+        }
     }
 
     /**
@@ -217,11 +222,26 @@ public class JoinOptimizer {
             HashMap<String, TableStats> stats,
             HashMap<String, Double> filterSelectivities, boolean explain)
             throws ParsingException {
-        //Not necessary for labs 1--3
-
-        // some code goes here
-        //Replace the following
-        return joins;
+        PlanCache optjoin = new PlanCache();
+        int numJoins = joins.size();
+        for (int i = 1; i <= numJoins; ++i) {
+            Set<Set<LogicalJoinNode>> subsets = enumerateSubsets(joins, i);
+            for (Set<LogicalJoinNode> s : subsets) {
+                CostCard bestPlan = null;
+                for (LogicalJoinNode joinToRemove : s) {
+                    CostCard costCard = computeCostAndCardOfSubplan(
+                            stats, filterSelectivities, joinToRemove, s, bestPlan == null ? Double.MAX_VALUE : bestPlan.cost, optjoin
+                    );
+                    if (costCard != null) {
+                        bestPlan = costCard;
+                    }
+                }
+                if (bestPlan != null) {
+                    optjoin.addPlan(s, bestPlan.cost, bestPlan.card, bestPlan.plan);
+                }
+            }
+        }
+        return optjoin.getOrder(new HashSet<>(joins));
     }
 
     // ===================== Private Methods =================================
