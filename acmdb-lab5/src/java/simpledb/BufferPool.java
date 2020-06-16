@@ -153,7 +153,7 @@ public class BufferPool {
 
         public synchronized boolean getLock(TransactionId tid, PageId pid, Permissions perm, DeadlockChecker deadlockChecker) {
             if (innerGetLock(tid, pid, perm)) {
-                deadlockChecker.addRequest(tid, pid);
+                deadlockChecker.removeRequest(tid, pid);
                 return true;
             } else {
                 return false;
@@ -328,7 +328,7 @@ public class BufferPool {
      */
     public Page getPage(TransactionId tid, PageId pid, Permissions perm)
                 throws TransactionAbortedException, DbException {
-        while (!lockManager.getLock(tid, pid, perm, deadlockChecker)) {
+        while (!lockManager.getLock(tid, pid, perm, deadlockChecker)) { // If successfully get a lock, simultaneously remove it in the deadlockChecker
             synchronized (lockManager) {
                 if (deadlockChecker.checkDeadlock(tid, pid, lockManager)) {
                     throw new TransactionAbortedException();
@@ -360,7 +360,7 @@ public class BufferPool {
      * @param tid the ID of the transaction requesting the unlock
      * @param pid the ID of the page to unlock
      */
-    public synchronized void releasePage(TransactionId tid, PageId pid) {
+    public void releasePage(TransactionId tid, PageId pid) {
         lockManager.releaseLock(tid, pid);
     }
 
@@ -374,7 +374,7 @@ public class BufferPool {
     }
 
     /** Return true if the specified transaction has a lock on the specified page */
-    public synchronized boolean holdsLock(TransactionId tid, PageId pid) {
+    public boolean holdsLock(TransactionId tid, PageId pid) {
         return lockManager.holdsLock(tid, pid);
     }
 
@@ -385,7 +385,7 @@ public class BufferPool {
      * @param tid the ID of the transaction requesting the unlock
      * @param commit a flag indicating whether we should commit or abort
      */
-    public synchronized void transactionComplete(TransactionId tid, boolean commit)
+    public void transactionComplete(TransactionId tid, boolean commit)
                 throws IOException {
         if (commit) {
             // And this one as well
@@ -431,7 +431,7 @@ public class BufferPool {
      * @param tableId the table to add the tuple to
      * @param t the tuple to add
      */
-    public synchronized void insertTuple(TransactionId tid, int tableId, Tuple t)
+    public void insertTuple(TransactionId tid, int tableId, Tuple t)
                 throws DbException, IOException, TransactionAbortedException {
         ArrayList<Page> pagesModified = Database.getCatalog().getDatabaseFile(tableId).insertTuple(tid, t);
         for (Page page : pagesModified) {
@@ -453,7 +453,7 @@ public class BufferPool {
      * @param tid the transaction deleting the tuple.
      * @param t the tuple to delete
      */
-    public synchronized void deleteTuple(TransactionId tid, Tuple t)
+    public void deleteTuple(TransactionId tid, Tuple t)
                 throws DbException, IOException, TransactionAbortedException {
         ArrayList<Page> pagesModified = Database.getCatalog().getDatabaseFile(t.getRecordId().getPageId().getTableId()).deleteTuple(tid, t);
         for (Page page : pagesModified) {
