@@ -177,7 +177,7 @@ public class BufferPool {
     private static class DeadlockChecker {
         private Map<TransactionId, Set<PageId>> pageRequests;
 
-        public DeadlockChecker(LockManager lockManager) {
+        public DeadlockChecker() {
             pageRequests = new ConcurrentHashMap<>();
         }
 
@@ -252,7 +252,7 @@ public class BufferPool {
         capacity = numPages;
 
         lockManager = new LockManager();
-        deadlockChecker = new DeadlockChecker(lockManager);
+        deadlockChecker = new DeadlockChecker();
     }
 
     /**
