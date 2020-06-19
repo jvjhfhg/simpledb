@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e691828e-c636-4eca-afa6-71c3fef16f61" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/simpledb/BufferPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/simpledb/BufferPool.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -17,19 +16,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/java/simpledb/BufferPool.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="254" column="46" selection-start-line="254" selection-start-column="46" selection-end-line="254" selection-end-column="46" />
+            <state relative-caret-position="456">
+              <caret line="210" column="24" selection-start-line="210" selection-start-column="24" selection-end-line="210" selection-end-column="24" />
               <folding>
                 <element signature="e#2075#2076#0" expanded="true" />
                 <element signature="e#2168#2169#0" expanded="true" />
-                <element signature="e#12656#12657#0" expanded="true" />
-                <element signature="e#12705#12706#0" expanded="true" />
-                <element signature="e#13127#13128#0" expanded="true" />
-                <element signature="e#13181#13182#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test/simpledb/systemtest/BTreeTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="114">
+              <caret line="113" column="44" selection-start-line="113" selection-start-column="44" selection-end-line="113" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -179,9 +183,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17910448" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18070363" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -197,7 +200,7 @@
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32936078" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32936078" />
       <window_info anchor="bottom" id="Tool Output" order="8" weight="0.32936078" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.49946696" visible="true" weight="0.32936078" />
+      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.49946696" visible="true" weight="0.32936078" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50053304" side_tool="true" weight="0.32936078" />
       <window_info anchor="bottom" id="ANTLR Preview" order="11" weight="0.32936078" />
       <window_info anchor="bottom" id="Messages" order="12" weight="0.32936078" />
@@ -450,24 +453,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/simpledb/systemtest/BTreeTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="113" column="44" lean-forward="true" selection-start-line="113" selection-start-column="44" selection-end-line="113" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/java/simpledb/BufferPool.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="254" column="46" selection-start-line="254" selection-start-column="46" selection-end-line="254" selection-end-column="46" />
+        <state relative-caret-position="456">
+          <caret line="210" column="24" selection-start-line="210" selection-start-column="24" selection-end-line="210" selection-end-column="24" />
           <folding>
             <element signature="e#2075#2076#0" expanded="true" />
             <element signature="e#2168#2169#0" expanded="true" />
-            <element signature="e#12656#12657#0" expanded="true" />
-            <element signature="e#12705#12706#0" expanded="true" />
-            <element signature="e#13127#13128#0" expanded="true" />
-            <element signature="e#13181#13182#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -483,6 +475,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1615">
           <caret line="87" column="52" selection-start-line="87" selection-start-column="52" selection-end-line="87" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/simpledb/systemtest/BTreeTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="113" column="44" selection-start-line="113" selection-start-column="44" selection-end-line="113" selection-end-column="44" />
         </state>
       </provider>
     </entry>

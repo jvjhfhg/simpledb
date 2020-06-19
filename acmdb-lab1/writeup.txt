@@ -1,4 +1,4 @@
-Writeup for Lab1 - Zhiqi Zhang, 517030910426
+Writeup for Lab1
 
 I think the space problem would become the bottleneck, so I try to use the least space without reducing perfomance much. 
 

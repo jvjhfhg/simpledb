@@ -1,3 +1,7 @@
-Writeup for Lab4 - Zhiqi Zhang, 517030910426
+Writeup for Lab5
 
-I add the numPage() method for class DbFile. 
+I implemented a dependency graph (class DeadlockChecker) for checking deadlock. 
+
+I found somewhere logically inconsistent in unit test TransactionTest. Firstly, the pid whose lock is owned by argument tid in BufferPool.transactionComplete() may not be in the buffer pool, which may cause my eviction strategy throwing an exception. In Transaction, it calls BufferPool.flushPages() before calling BufferPool.transactionComplete() with commit=true, which seems I don't need to call flushPages() in transactionComplete() again, but the test directly call the latter. 
+
+I spent 3 days for this lab. 

@@ -1,4 +1,4 @@
-Writeup for Lab2 - Zhiqi Zhang, 517030910426
+Writeup for Lab2
 
 I record the last operating time of each page in BufferPool and evict the earliest one. 
 
